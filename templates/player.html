@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Présences – Équipe Rugby</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Variables & reset ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:   #1a7a3c;
+      --green-d: #145f2e;
+      --green-l: #22a050;
+      --cream:   #f5f0e8;
+      --mud:     #3d2b1a;
+      --mud-l:   #6b4c2e;
+      --gold:    #d4a72c;
+      --white:   #ffffff;
+      --red:     #c0392b;
+      --shadow:  0 4px 20px rgba(0,0,0,.18);
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--cream);
+      color: var(--mud);
+      min-height: 100vh;
+    }
+
+    /* ── Header ───────────────────────────────────────── */
+    header {
+      background: var(--green);
+      color: var(--white);
+      padding: 0 1rem;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    .header-inner {
+      max-width: 680px; margin: auto;
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.75rem 0;
+    }
+    .ball-icon { font-size: 2rem; }
+    .header-text h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.6rem; font-weight: 800;
+      letter-spacing: .04em; text-transform: uppercase;
+    }
+    .header-text p { font-size: .82rem; opacity: .8; margin-top: .1rem; }
+    .coach-link {
+      margin-left: auto;
+      background: var(--gold); color: var(--mud);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: .85rem;
+      letter-spacing: .05em; text-transform: uppercase;
+      padding: .45rem .9rem; border-radius: 4px;
+      text-decoration: none; white-space: nowrap;
+      transition: background .2s;
+    }
+    .coach-link:hover { background: #e8b93a; }
+
+    /* ── Main container ───────────────────────────────── */
+    main {
+      max-width: 680px; margin: 0 auto;
+      padding: 1.5rem 1rem 4rem;
+    }
+
+    /* ── Name card ────────────────────────────────────── */
+    .name-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+      border-left: 5px solid var(--green);
+    }
+    .name-card label {
+      display: block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      text-transform: uppercase; letter-spacing: .06em;
+      color: var(--green-d); margin-bottom: .5rem;
+    }
+    .name-card input {
+      width: 100%; padding: .7rem 1rem;
+      border: 2px solid #d9d0c4; border-radius: 6px;
+      font-family: 'Barlow', sans-serif; font-size: 1rem;
+      color: var(--mud); background: var(--cream);
+      transition: border-color .2s;
+    }
+    .name-card input:focus {
+      outline: none; border-color: var(--green);
+      background: #fff;
+    }
+
+    /* ── Section heading ──────────────────────────────── */
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .1em;
+      color: var(--mud-l); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 2px;
+      background: linear-gradient(to right, #c8baa6, transparent);
+    }
+
+    /* ── Training cards ───────────────────────────────── */
+    .training-list { display: flex; flex-direction: column; gap: .85rem; }
+
+    .training-card {
+      background: var(--white);
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.1);
+      overflow: hidden;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .training-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+    .training-header {
+      background: var(--green); color: var(--white);
+      padding: .75rem 1.25rem;
+      display: flex; align-items: center; gap: .75rem;
+    }
+    .training-date-badge {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1.1rem;
+      letter-spacing: .03em;
+    }
+    .training-label {
+      font-size: .82rem; opacity: .85;
+      font-style: italic;
+    }
+    .training-day {
+      margin-left: auto;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600; font-size: .85rem;
+      background: rgba(255,255,255,.2);
+      padding: .2rem .6rem; border-radius: 12px;
+      text-transform: uppercase; letter-spacing: .05em;
+    }
+
+    .training-body { padding: .85rem 1.25rem; }
+
+    .status-toggle {
+      display: flex; gap: .6rem;
+    }
+    .status-btn {
+      flex: 1; padding: .65rem .5rem;
+      border: 2px solid #d9d0c4;
+      border-radius: 7px;
+      background: transparent; cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: .95rem;
+      letter-spacing: .05em; text-transform: uppercase;
+      color: #a09080;
+      transition: all .18s;
+    }
+    .status-btn.present.active {
+      background: var(--green); border-color: var(--green);
+      color: #fff; box-shadow: 0 3px 10px rgba(26,122,60,.35);
+    }
+    .status-btn.absent.active {
+      background: var(--red); border-color: var(--red);
+      color: #fff; box-shadow: 0 3px 10px rgba(192,57,43,.35);
+    }
+    .status-btn:hover:not(.active) {
+      border-color: var(--mud-l); color: var(--mud);
+    }
+
+    /* ── Empty state ──────────────────────────────────── */
+    .empty-state {
+      text-align: center; padding: 3rem 1rem;
+      color: var(--mud-l);
+    }
+    .empty-state .icon { font-size: 3rem; margin-bottom: .75rem; }
+    .empty-state p { font-size: .95rem; }
+
+    /* ── Submit button ────────────────────────────────── */
+    .submit-wrap {
+      position: sticky; bottom: 1rem;
+      margin-top: 1.5rem; text-align: center;
+    }
+    #submit-btn {
+      background: var(--green);
+      color: var(--white);
+      border: none; cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 1.15rem;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 1rem 2.5rem; border-radius: 8px;
+      box-shadow: 0 6px 20px rgba(26,122,60,.4);
+      transition: background .2s, transform .15s, box-shadow .15s;
+      width: 100%; max-width: 360px;
+    }
+    #submit-btn:hover {
+      background: var(--green-l);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(26,122,60,.5);
+    }
+    #submit-btn:active { transform: translateY(0); }
+
+    /* ── Toast notification ───────────────────────────── */
+    #toast {
+      position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%);
+      background: var(--mud); color: #fff;
+      padding: .75rem 1.5rem; border-radius: 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600; font-size: 1rem;
+      box-shadow: var(--shadow);
+      opacity: 0; transition: opacity .35s;
+      z-index: 200; white-space: nowrap;
+      pointer-events: none;
+    }
+    #toast.show { opacity: 1; }
+    #toast.success { background: var(--green-d); }
+    #toast.error   { background: var(--red); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <span class="ball-icon">🏉</span>
+    <div class="header-text">
+      <h1>Présences Équipe</h1>
+      <p>Indiquez votre disponibilité pour les prochains entraînements</p>
+    </div>
+    <a href="/login" class="coach-link">🔒 Coach</a>
+  </div>
+</header>
+
+<main>
+  <!-- Nom du joueur -->
+  <div class="name-card">
+    <label for="player-name">👤 Votre prénom / nom</label>
+    <input type="text" id="player-name" placeholder="Ex : Thomas Dupont" autocomplete="name" />
+  </div>
+
+  <!-- Liste des entraînements -->
+  {% if trainings %}
+    <div class="section-title">Prochains entraînements</div>
+    <div class="training-list" id="training-list">
+      {% for t in trainings %}
+        {% set parts = t.date.split('-') %}
+        {% set months = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'] %}
+        {% set days   = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'] %}
+        <div class="training-card" data-id="{{ t.id }}">
+          <div class="training-header">
+            <span class="training-date-badge">
+              {{ parts[2] }} {{ months[parts[1]|int - 1] }} {{ parts[0] }}
+            </span>
+            {% if t.label %}
+              <span class="training-label">{{ t.label }}</span>
+            {% endif %}
+          </div>
+          <div class="training-body">
+            <div class="status-toggle">
+              <button class="status-btn present" data-status="present">✅ Présent</button>
+              <button class="status-btn absent"  data-status="absent">❌ Absent</button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <div class="icon">📅</div>
+      <p>Aucun entraînement programmé pour le moment.<br>Revenez plus tard !</p>
+    </div>
+  {% endif %}
+
+  {% if trainings %}
+    <div class="submit-wrap">
+      <button id="submit-btn">Envoyer mes réponses</button>
+    </div>
+  {% endif %}
+</main>
+
+<div id="toast"></div>
+
+<script>
+  // ── Sélection présent / absent ────────────────────────────────────────────
+  document.querySelectorAll('.training-card').forEach(card => {
+    card.querySelectorAll('.status-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Désactiver tous les boutons de cette carte
+        card.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  });
+
+  // ── Toast ─────────────────────────────────────────────────────────────────
+  const toast = document.getElementById('toast');
+  function showToast(msg, type = '') {
+    toast.textContent = msg;
+    toast.className = 'show ' + type;
+    setTimeout(() => { toast.className = ''; }, 3000);
+  }
+
+  // ── Envoi des réponses ────────────────────────────────────────────────────
+  document.getElementById('submit-btn')?.addEventListener('click', async () => {
+    const playerName = document.getElementById('player-name').value.trim();
+    if (!playerName) {
+      showToast('⚠️ Veuillez entrer votre nom.', 'error');
+      document.getElementById('player-name').focus();
+      return;
+    }
+
+    const responses = [];
+    document.querySelectorAll('.training-card').forEach(card => {
+      const trainingId = parseInt(card.dataset.id);
+      const active = card.querySelector('.status-btn.active');
+      if (active) {
+        responses.push({ training_id: trainingId, status: active.dataset.status });
+      }
+    });
+
+    if (responses.length === 0) {
+      showToast('⚠️ Sélectionnez au moins une réponse.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+
+    try {
+      const res = await fetch('/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ player_name: playerName, responses })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        showToast(`✅ Merci ${playerName} ! Réponses enregistrées.`, 'success');
+        btn.textContent = '✅ Réponses envoyées !';
+      } else {
+        showToast('❌ Erreur : ' + data.error, 'error');
+        btn.disabled = false;
+        btn.textContent = 'Envoyer mes réponses';
+      }
+    } catch (e) {
+      showToast('❌ Erreur réseau.', 'error');
+      btn.disabled = false;
+      btn.textContent = 'Envoyer mes réponses';
+    }
+  });
+</script>
+</body>
+</html>

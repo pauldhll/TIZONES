@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion Coach – Rugby</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:   #1a7a3c;
+      --green-d: #145f2e;
+      --green-l: #22a050;
+      --gold:    #d4a72c;
+      --mud:     #3d2b1a;
+      --red:     #c0392b;
+      --bg:      #1c2b20;
+      --card-bg: #243829;
+      --border:  #2e4d38;
+      --white:   #ffffff;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    /* ── Decorative background ── */
+    body::before {
+      content: '🏉';
+      position: fixed;
+      font-size: 22rem;
+      opacity: .03;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -55%) rotate(-20deg);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* ── Card ── */
+    .login-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2.5rem 2rem;
+      width: 100%; max-width: 380px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+      position: relative;
+    }
+
+    /* ── Gold top bar ── */
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold), #f0c84a, var(--gold));
+      border-radius: 14px 14px 0 0;
+    }
+
+    /* ── Logo / title ── */
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .login-header .icon {
+      font-size: 2.8rem;
+      display: block;
+      margin-bottom: .6rem;
+    }
+    .login-header h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.7rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--white);
+    }
+    .login-header h1 span { color: var(--gold); }
+    .login-header p {
+      color: rgba(255,255,255,.45);
+      font-size: .83rem; margin-top: .3rem;
+    }
+
+    /* ── Form ── */
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label {
+      display: block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: rgba(255,255,255,.5);
+      margin-bottom: .4rem;
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+    .password-wrap input {
+      width: 100%;
+      padding: .75rem 2.8rem .75rem 1rem;
+      background: #1c2b20;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: 'Barlow', sans-serif; font-size: 1rem;
+      transition: border-color .2s;
+    }
+    .password-wrap input:focus {
+      outline: none; border-color: var(--gold);
+    }
+    .toggle-pw {
+      position: absolute; right: .75rem; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      color: rgba(255,255,255,.35); cursor: pointer;
+      font-size: 1.1rem; padding: .2rem;
+      transition: color .2s;
+    }
+    .toggle-pw:hover { color: rgba(255,255,255,.7); }
+
+    /* ── Error message ── */
+    .error-msg {
+      background: rgba(192,57,43,.25);
+      border: 1px solid rgba(192,57,43,.5);
+      border-radius: 7px;
+      color: #f09090;
+      font-size: .88rem;
+      padding: .65rem 1rem;
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+
+    /* ── Submit button ── */
+    .login-btn {
+      width: 100%; padding: .85rem;
+      background: var(--green); color: var(--white);
+      border: none; border-radius: 8px; cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 1.1rem;
+      letter-spacing: .07em; text-transform: uppercase;
+      transition: background .2s, transform .15s, box-shadow .15s;
+      box-shadow: 0 4px 16px rgba(26,122,60,.4);
+    }
+    .login-btn:hover {
+      background: var(--green-l);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(26,122,60,.5);
+    }
+    .login-btn:active { transform: none; }
+
+    /* ── Back link ── */
+    .back-link {
+      display: block; text-align: center;
+      margin-top: 1.5rem;
+      color: rgba(255,255,255,.3);
+      font-size: .82rem; text-decoration: none;
+      transition: color .2s;
+    }
+    .back-link:hover { color: rgba(255,255,255,.6); }
+
+    /* ── Hint ── */
+    .hint {
+      text-align: center;
+      margin-top: 1rem;
+      color: rgba(255,255,255,.2);
+      font-size: .75rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="login-header">
+    <span class="icon">🔒</span>
+    <h1>Espace <span>Coach</span></h1>
+    <p>Entrez le mot de passe pour accéder au tableau de bord</p>
+  </div>
+
+  {% if error %}
+    <div class="error-msg">⚠️ {{ error }}</div>
+  {% endif %}
+
+  <form method="POST" action="/login">
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <div class="password-wrap">
+        <input type="password" id="password" name="password"
+               placeholder="••••••••••••" autofocus autocomplete="current-password" />
+        <button type="button" class="toggle-pw" id="toggle-pw" title="Afficher / masquer">👁</button>
+      </div>
+    </div>
+
+    <button type="submit" class="login-btn">Connexion →</button>
+  </form>
+
+  <a href="/" class="back-link">← Retour à la page joueurs</a>
+
+  <p class="hint">Mot de passe par défaut : <code>allez-les-verts</code></p>
+</div>
+
+<script>
+  // Afficher / masquer le mot de passe
+  document.getElementById('toggle-pw').addEventListener('click', () => {
+    const input = document.getElementById('password');
+    input.type = input.type === 'password' ? 'text' : 'password';
+  });
+</script>
+
+</body>
+</html>

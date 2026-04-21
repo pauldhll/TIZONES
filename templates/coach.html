@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Coach – Rugby</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:   #1a7a3c;
+      --green-d: #145f2e;
+      --green-l: #22a050;
+      --cream:   #f5f0e8;
+      --mud:     #3d2b1a;
+      --mud-l:   #6b4c2e;
+      --gold:    #d4a72c;
+      --white:   #ffffff;
+      --red:     #c0392b;
+      --bg-dark: #1c2b20;
+      --shadow:  0 4px 20px rgba(0,0,0,.18);
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--bg-dark);
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    /* ── Header ───────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, #0f1f14 0%, #1a3322 100%);
+      border-bottom: 3px solid var(--gold);
+      padding: 0 1rem;
+      box-shadow: var(--shadow);
+    }
+    .header-inner {
+      max-width: 900px; margin: auto;
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 0;
+    }
+    .header-inner h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.8rem; font-weight: 800;
+      letter-spacing: .05em; text-transform: uppercase;
+    }
+    .header-inner h1 span { color: var(--gold); }
+    .header-inner p { font-size: .82rem; opacity: .65; margin-top: .15rem; }
+    .player-link {
+      margin-left: auto;
+      background: transparent;
+      border: 2px solid rgba(255,255,255,.3);
+      color: rgba(255,255,255,.8);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: .85rem;
+      letter-spacing: .05em; text-transform: uppercase;
+      padding: .45rem .9rem; border-radius: 4px;
+      text-decoration: none; white-space: nowrap;
+      transition: all .2s;
+    }
+    .player-link:hover {
+      border-color: var(--gold); color: var(--gold);
+    }
+
+    /* ── Main grid ────────────────────────────────────── */
+    main {
+      max-width: 900px; margin: 0 auto;
+      padding: 1.5rem 1rem 4rem;
+    }
+
+    .layout { display: flex; gap: 1.5rem; align-items: flex-start; }
+    .left-col  { width: 280px; flex-shrink: 0; position: sticky; top: 1rem; }
+    .right-col { flex: 1; min-width: 0; }
+
+    @media (max-width: 660px) {
+      .layout { flex-direction: column; }
+      .left-col { width: 100%; position: static; }
+    }
+
+    /* ── Add training card ────────────────────────────── */
+    .add-card {
+      background: #243829;
+      border: 1px solid #2e4d38;
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+    .add-card h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .1em;
+      color: var(--gold); margin-bottom: 1rem;
+    }
+
+    .form-group { margin-bottom: .85rem; }
+    .form-group label {
+      display: block; font-size: .78rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .06em;
+      color: rgba(255,255,255,.55); margin-bottom: .35rem;
+    }
+    .form-group input[type="date"],
+    .form-group input[type="text"] {
+      width: 100%; padding: .65rem .85rem;
+      background: #1c2b20;
+      border: 1.5px solid #3a5c42;
+      border-radius: 6px;
+      color: var(--white);
+      font-family: 'Barlow', sans-serif; font-size: .95rem;
+      transition: border-color .2s;
+    }
+    .form-group input:focus {
+      outline: none; border-color: var(--gold);
+    }
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1); opacity: .6; cursor: pointer;
+    }
+
+    .add-btn {
+      width: 100%; padding: .75rem;
+      background: var(--green); color: var(--white);
+      border: none; border-radius: 7px; cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 1rem;
+      letter-spacing: .06em; text-transform: uppercase;
+      transition: background .2s, transform .15s;
+    }
+    .add-btn:hover { background: var(--green-l); transform: translateY(-1px); }
+
+    /* ── Section heading ──────────────────────────────── */
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.05rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .1em;
+      color: rgba(255,255,255,.5); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, #3a5c42, transparent);
+    }
+
+    /* ── Session cards ────────────────────────────────── */
+    .session-list { display: flex; flex-direction: column; gap: 1.1rem; }
+
+    .session-card {
+      background: #1e3025;
+      border: 1px solid #2e4d38;
+      border-radius: 10px; overflow: hidden;
+    }
+
+    .session-head {
+      background: #243829;
+      padding: .85rem 1.1rem;
+      display: flex; align-items: center; gap: .75rem;
+      flex-wrap: wrap;
+    }
+    .session-date {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 1.2rem;
+      color: var(--gold);
+    }
+    .session-label {
+      font-size: .82rem; color: rgba(255,255,255,.6);
+      font-style: italic;
+    }
+    .session-stats {
+      margin-left: auto;
+      display: flex; gap: .5rem;
+    }
+    .stat-pill {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: .82rem;
+      padding: .25rem .7rem; border-radius: 12px;
+      letter-spacing: .04em;
+    }
+    .stat-pill.pres { background: rgba(26,122,60,.5); color: #7ce89f; }
+    .stat-pill.abs  { background: rgba(192,57,43,.4); color: #f09090; }
+    .stat-pill.none { background: rgba(255,255,255,.1); color: rgba(255,255,255,.4); }
+
+    .delete-form { margin-left: .5rem; }
+    .delete-btn {
+      background: transparent; border: none;
+      color: rgba(255,255,255,.3); cursor: pointer;
+      font-size: 1.05rem; padding: .1rem .4rem;
+      transition: color .2s;
+    }
+    .delete-btn:hover { color: var(--red); }
+
+    /* ── Attendance table ─────────────────────────────── */
+    .att-wrap { padding: .85rem 1.1rem; }
+    .att-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    .att-table th {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: .75rem;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: rgba(255,255,255,.45);
+      padding: .35rem .5rem;
+      border-bottom: 1px solid #2e4d38;
+      text-align: left;
+    }
+    .att-table td {
+      padding: .45rem .5rem;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      color: rgba(255,255,255,.85);
+    }
+    .att-table tr:last-child td { border-bottom: none; }
+
+    .badge-pres, .badge-abs {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: .78rem;
+      letter-spacing: .05em; text-transform: uppercase;
+      padding: .2rem .6rem; border-radius: 4px;
+    }
+    .badge-pres { background: rgba(26,122,60,.45); color: #7ce89f; }
+    .badge-abs  { background: rgba(192,57,43,.35); color: #f09090; }
+
+    .no-responses {
+      text-align: center; padding: 1.2rem;
+      color: rgba(255,255,255,.3);
+      font-style: italic; font-size: .88rem;
+    }
+
+    /* ── Empty state ──────────────────────────────────── */
+    .empty-state {
+      text-align: center; padding: 3rem 1rem;
+      color: rgba(255,255,255,.3);
+    }
+    .empty-state .icon { font-size: 2.5rem; margin-bottom: .75rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <h1>🏉 Dashboard <span>Coach</span></h1>
+      <p>Gérez les entraînements et consultez les présences</p>
+    </div>
+    <a href="/logout" class="player-link" style="color:#f09090;border-color:rgba(240,144,144,.4);"
+       onclick="return confirm('Se déconnecter ?')">🔓 Déconnexion</a>
+    <a href="/" class="player-link">👥 Page Joueurs</a>
+  </div>
+</header>
+
+<main>
+  <div class="layout">
+
+    <!-- ── Colonne gauche : ajout d'entraînement ── -->
+    <div class="left-col">
+      <div class="add-card">
+        <h2>➕ Nouvel entraînement</h2>
+        <form action="/add_training" method="POST">
+          <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required />
+          </div>
+          <div class="form-group">
+            <label for="label">Description (optionnel)</label>
+            <input type="text" id="label" name="label" placeholder="Ex : entraînement de reprise" />
+          </div>
+          <button type="submit" class="add-btn">Ajouter la séance</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ── Colonne droite : liste des séances ── -->
+    <div class="right-col">
+      {% if sessions %}
+        <div class="section-title">Séances programmées</div>
+        <div class="session-list">
+          {% for s in sessions %}
+            {% set t     = s.training %}
+            {% set parts = t.date.split('-') %}
+            {% set months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'] %}
+
+            <div class="session-card">
+              <div class="session-head">
+                <span class="session-date">
+                  {{ parts[2] }} {{ months[parts[1]|int - 1] }} {{ parts[0] }}
+                </span>
+                {% if t.label %}
+                  <span class="session-label">{{ t.label }}</span>
+                {% endif %}
+                <div class="session-stats">
+                  {% if s.present > 0 %}
+                    <span class="stat-pill pres">✅ {{ s.present }} présent{{ 's' if s.present > 1 }}</span>
+                  {% endif %}
+                  {% if s.absent > 0 %}
+                    <span class="stat-pill abs">❌ {{ s.absent }} absent{{ 's' if s.absent > 1 }}</span>
+                  {% endif %}
+                  {% if s.present == 0 and s.absent == 0 %}
+                    <span class="stat-pill none">Aucune réponse</span>
+                  {% endif %}
+                </div>
+                <form class="delete-form" action="/delete_training/{{ t.id }}" method="POST"
+                      onsubmit="return confirm('Supprimer cette séance et ses réponses ?')">
+                  <button class="delete-btn" type="submit" title="Supprimer">🗑</button>
+                </form>
+              </div>
+
+              <div class="att-wrap">
+                {% if s.rows %}
+                  <table class="att-table">
+                    <thead>
+                      <tr>
+                        <th>Joueur</th>
+                        <th>Statut</th>
+                        <th>Mis à jour</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for r in s.rows %}
+                        <tr>
+                          <td>{{ r.player_name }}</td>
+                          <td>
+                            {% if r.status == 'present' %}
+                              <span class="badge-pres">Présent</span>
+                            {% else %}
+                              <span class="badge-abs">Absent</span>
+                            {% endif %}
+                          </td>
+                          <td style="color:rgba(255,255,255,.35); font-size:.78rem;">
+                            {{ r.updated_at[:16].replace('T',' ') }}
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                {% else %}
+                  <p class="no-responses">Aucune réponse pour l'instant.</p>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+      {% else %}
+        <div class="empty-state">
+          <div class="icon">📋</div>
+          <p>Aucune séance programmée.<br>Ajoutez votre premier entraînement !</p>
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+</main>
+
+<script>
+  // Pré-remplir la date du jour dans le formulaire
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('date').value = today;
+</script>
+
+</body>
+</html>
